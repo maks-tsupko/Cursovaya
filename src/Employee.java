@@ -2,70 +2,77 @@ import java.util.Objects;
 
 public class Employee {
 
-    private String name;
-    private String surname;
-    private String lastname;
-    private int department;
-    private int salary;
-    private int id;
-    private static int Counter = 1;
+    private final String fullName;
+    private int salary; // зарплата
+    private int department; // отдел
+    private static int counter = 1; // счётчик
+    private final int id; // поле id, которое проставляется из счетчика
 
-
-    @Override
-    public String toString() {
-        return "Сотрудник - " +
-                "имя: " + name + '\'' +
-                ", фамилия: " + surname + '\'' +
-                ", отчество: " + lastname + '\'' +
-                ", отдел - " + department +
-                ", зарплата - " + salary +
-                ", id - " + id;
-    }
-
-    public Employee(String name, String surname, String lastname, int department, int salary, int id) {
-        this.name = name;
-        this.surname = surname;
-        this.lastname = lastname;
-        this.department = department;
+    public Employee(
+            String fullName,
+            int salary,
+            int department
+    ) {
+        this.fullName = fullName;
         this.salary = salary;
-        this.id = Counter++;
-    }
-
-    public void setDepartment(int department) {
         this.department = department;
+        this.id = counter++;
     }
 
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public int getDepartment() {
-        return department;
+    public String getFullName() {
+        return fullName;
     }
 
     public int getSalary() {
         return salary;
     }
 
+    public int getDepartment() {
+        return department;
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
+
     public int getId() {
         return id;
     }
 
-    public static int getCounter() {
-        return Counter;
+    public void setSalary(int salary) {
+        this.salary = Math.max(salary, 0);
+    }
+
+    public void setDepartment(int department) {
+        this.department = (department >= 1 && department <= 5) ? department : 1;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "ID: %d, ФИО: %s, ЗП: %d, отдел: %d",
+                id,
+                getFullName(),
+                salary,
+                department
+        );
+    }
+
+    public String getEmployeeData() {
+        return "ID: " + getId() + " | ФИО: " + getFullName() + " | зарплата: " + getSalary();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return fullName.equals(employee.fullName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fullName);
     }
 }
-
 
